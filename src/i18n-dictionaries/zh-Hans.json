@@ -6,7 +6,7 @@
   "filters": {
     "categories": {
       "title": "业务类",
-      "grocery": "超级市场",
+      "groceries": "超级市场",
       "health": "卫生保健",
       "laundromat": "洗衣店",
       "restaurants": "餐厅",

@@ -4,7 +4,18 @@
     "subtitle": "A directory of essential businesses that are open in the East Village area during COVID-19."
   },
   "filters": {
-    "categories": "Categories",
+    "categories": {
+      "title": "Categories",
+      "all": "All",
+      "groceries": "Grocery",
+      "health": "Health",
+      "laundromat": "Laundry",
+      "restaurants": "Restaurants",
+      "dessert": "Dessert",
+      "retail": "Retail",
+      "shops_and_services": "Shops & Services",
+      "free_food": "Free Food"
+    },
     "options": {
       "title": "Options",
       "any": "Any",

@@ -1,9 +1,11 @@
 <script>
+    import {_} from 'svelte-i18n'
     import {createEventDispatcher} from 'svelte';
 
     const dispatch = createEventDispatcher();
 
     export let name = ''
+    export let unfilteredCategoryI18nIdentifier = ''
     export let categories = [];
     export let showAfter = 0;
     export let customColors = null;
@@ -51,7 +53,7 @@
 
 {#if categories.length > showAfter}
     <div class="filter-header"><h6 class="is-6">{name}:</h6>
-        <button class="button is-small {allCategories ? 'is-info' : ''}" on:click={resetCategoryItems}>All</button>
+        <button class="button is-small {allCategories ? 'is-info' : ''}" on:click={resetCategoryItems}>{$_(unfilteredCategoryI18nIdentifier)}</button>
     </div>
 
     <div class="filter-container">
@@ -59,10 +61,10 @@
             {#if customColors}
                 <button class="button is-small"
                         style={getBorderColor(item)}
-                        on:click={toggleCategoryItem(item)}>{item.name}</button>
+                        on:click={toggleCategoryItem(item)}>{$_(item.i18nIdentifier)}</button>
             {:else}
                 <button class="button is-small {item.selected ? 'is-info' : ''}"
-                        on:click={toggleCategoryItem(item)}>{item.name}</button>
+                        on:click={toggleCategoryItem(item)}>{$_(item.i18nIdentifier)}</button>
             {/if}
         {/each}
     </div>

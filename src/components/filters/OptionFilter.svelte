@@ -31,7 +31,7 @@
 <div class="filter-container">
     {#each options as item, name}
         <button class="button is-small {item.selected ? 'is-info' : ''}"
-                on:click={toggleOptionItem(item)}>{item.name}</button>
+                on:click={toggleOptionItem(item)}>{$_(item.i18nIdentifier)}</button>
     {/each}
 </div>
 

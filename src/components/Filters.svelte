@@ -9,37 +9,51 @@
     const customColors = {
         'groceries': {
             selectedColor: '#0288d1',
-            color: '#99cfec'
+            color: '#99cfec',
+            i18nIdentifier: 'filters.categories.groceries',
         },
         'health': {
             selectedColor: '#7cb342',
-            color: '#cae0b3'
+            color: '#cae0b3',
+            i18nIdentifier: 'filters.categories.health',
         },
 
         'laundromat': {
             selectedColor: '#681a16',
-            color: '#A47573'
+            color: '#A47573',
+            i18nIdentifier: 'filters.categories.laundromat',
         },
         'restaurants': {
             selectedColor: '#eb6565',
-            color: '#f7c1c1'
+            color: '#f7c1c1',
+            i18nIdentifier: 'filters.categories.restaurants',
         },
         'dessert': {
             selectedColor: '#9c27b0',
-            color: '#d7a8df'
+            color: '#d7a8df',
+            i18nIdentifier: 'filters.categories.dessert',
         },
         'retail': {
             selectedColor: '#fff35f',
-            color: '#fffabf'
+            color: '#fffabf',
+            i18nIdentifier: 'filters.categories.retail',
         },
         'shops & services': {
             selectedColor: '#f2983f',
-            color: '#f9d5b2'
+            color: '#f9d5b2',
+            i18nIdentifier: 'filters.categories.shops_and_services',
         },
         'free food': {
             selectedColor: '#12ba96',
-            color: '#8be3cc'
+            color: '#8be3cc',
+            i18nIdentifier: 'filters.categories.free_food',
         }
+    }
+
+    const subcategoryNameToI18nIdentifier = {
+        'Takeout': 'filters.options.takeout',
+        'Delivery': 'filters.options.delivery',
+        'Shipping': 'filters.options.shipping',
     }
 
     let overallCategoryItems = []
@@ -49,16 +63,20 @@
     $: {
         //init filters
         if ($data && $data.features.length > 0) {
-            const categories = new Set($data.features.map(feature => feature.properties.overallcategory))
-            //sort by customColors's order
-            const order = Object.keys(customColors)
-            const unique = Array.from(categories).map(item => [order.indexOf(item.toLowerCase().trim()), item])
-                    .sort().map(arr => capitalizeFirstLetter(arr[1]))
-            overallCategoryItems = unique.filter(item => item.length > 0).map(item => ({
-                name: item,
-                selected: false
-            }))
-
+            // Extract category names from DB
+            const categoriesInDB = new Set($data.features.map(feature => feature.properties.overallcategory.trim().toLowerCase()))
+            // Only display categories that are in the DB
+            overallCategoryItems = [];
+            // debugger;
+            for (let customColor of Object.keys(customColors)) {
+                if (categoriesInDB.has(customColor)) {
+                    overallCategoryItems.push({
+                        name: customColor,
+                        selected: false,
+                        i18nIdentifier: customColors[customColor].i18nIdentifier,
+                    })
+                }
+            }
         }
     }
 
@@ -73,9 +91,11 @@
                         .map(feature => capitalizeFirstLetter(feature.properties.subcategory))
                 //filter for unique items
                 const unique = Array.from(new Set(subCategories)).sort()
+                console.log('what.')
                 subCategoryItems = unique.filter(item => item.length > 0).map(item => ({
                     name: item,
-                    selected: false
+                    selected: false,
+                    i18nIdentifier: subcategoryNameToI18nIdentifier[item]
                 }))
             } else {
                 subCategoryItems = []
@@ -85,17 +105,17 @@
 
     let optionItems = [
         {
-            name: $_('filters.options.takeout'),
+            i18nIdentifier: 'filters.options.takeout',
             selected: false,
             filter: feature => feature.properties.takeoutyorn.toUpperCase() === 'Y'
         },
         {
-            name: $_('filters.options.delivery'),
+            i18nIdentifier: 'filters.options.delivery',
             selected: false,
             filter: feature => feature.properties.deliveryyorn.toUpperCase() === 'Y'
         },
         {
-            name: $_('filters.options.shipping'),
+            i18nIdentifier: 'filters.options.shipping',
             selected: false,
             filter: feature => feature.properties.shippingyorn.toUpperCase() === 'Y'
         },
@@ -138,7 +158,7 @@
 
 <GeneralSearch {textSearch}/>
 
-<CategoryFilter name={$_('filters.categories')} categories={overallCategoryItems}
+<CategoryFilter name={$_('filters.categories.title')} categories={overallCategoryItems} unfilteredCategoryI18nIdentifier={'filters.categories.all'}
                 on:update={e => overallCategoryItems = e.detail} {customColors}/>
 
 <br>

@@ -6,7 +6,7 @@
   "filters": {
     "categories": {
       "title": "Categorias",
-      "grocery": "Comestibles",
+      "groceries": "Comestibles",
       "health": "Salud",
       "laundromat": "Lavandería",
       "restaurants": "Restaurantes",
